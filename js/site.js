@@ -1,5 +1,4 @@
 const books = [{
-        id: 1,
         title: "ComicCon",
         author: "New York",
         copiesSold: 240000,
@@ -7,7 +6,6 @@ const books = [{
         publishingDate: "06/01/2017",
     },
     {
-        id: 2,
         title: "ComicCon",
         author: "New York",
         copiesSold: 250000,
@@ -15,7 +13,6 @@ const books = [{
         publishingDate: "06/01/2018",
     },
     {
-        id: 3,
         title: "ComicCon",
         author: "New York",
         copiesSold: 257000,
@@ -23,7 +20,6 @@ const books = [{
         publishingDate: "06/01/2019",
     },
     {
-        id: 4,
         title: "ComicCon",
         author: "San Diego",
         copiesSold: 130000,
@@ -31,7 +27,6 @@ const books = [{
         publishingDate: "06/01/2017",
     },
     {
-        id: 5,
         title: "ComicCon",
         author: "San Diego",
         copiesSold: 140000,
@@ -39,7 +34,6 @@ const books = [{
         publishingDate: "06/01/2018",
     },
     {
-        id: 6,
         title: "ComicCon",
         author: "San Diego",
         copiesSold: 150000,
@@ -47,7 +41,6 @@ const books = [{
         publishingDate: "06/01/2019",
     },
     {
-        id: 7,
         title: "HeroesCon",
         author: "Charlotte",
         copiesSold: 40000,
@@ -55,7 +48,6 @@ const books = [{
         publishingDate: "06/01/2017",
     },
     {
-        id: 8,
         title: "HeroesCon",
         author: "Charlotte",
         copiesSold: 45000,
@@ -63,13 +55,12 @@ const books = [{
         publishingDate: "06/01/2018",
     },
     {
-        id: 9,
         title: "HeroesCon",
         author: "Charlotte",
         copiesSold: 50000,
         state: "North Carolina",
         publishingDate: "06/01/2019",
-    },
+    }
 ];
 
 function buildDropDown(){
@@ -199,5 +190,27 @@ function displayData(){
 
         bookDataBody.appendChild(bookRow);
     }
+}
 
+//expected input: none
+//expected reutrn: none
+//save data
+function saveData(){
+    let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
+    let obj = {};
+
+    obj["title"] = document.getElementById("newTitle").value;
+    obj["author"] = document.getElementById("newAuthor").value;
+    obj["copiesSold"] = parseInt(document.getElementById("newCopiesSold").value, 10);
+    let stateSelect = document.getElementById("newState");
+    obj["state"] = stateSelect.options[stateSelect.selectedIndex].text;
+    let publishingDate = document.getElementById("newPublishingDate").value;
+    let publishingDate2 = `${publishingDate} 00:00`;
+    obj["publishingDate"] = new Date(publishingDate2).toLocaleDateString();
+
+    currentBooks.push(obj);
+    localStorage.setItem("booksArray", JSON.stringify(currentBooks));
+
+    buildDropDown();
+    displayData();
 }
