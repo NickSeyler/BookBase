@@ -1,65 +1,65 @@
 const books = [{
-        title: "ComicCon",
-        author: "New York",
-        copiesSold: 240000,
-        state: "New York",
-        publishingDate: "06/01/2017",
+        title: "The Hobbit",
+        author: "J.R.R Tolkien",
+        copiesSold: 104000000,
+        country: "United Kingdom",
+        publishingDate: "09/21/1937",
     },
     {
-        title: "ComicCon",
-        author: "New York",
-        copiesSold: 250000,
-        state: "New York",
-        publishingDate: "06/01/2018",
+        title: "The Fellowship of the Ring",
+        author: "J.R.R. Tolkien",
+        copiesSold: 161000000,
+        country: "United Kingdom",
+        publishingDate: "07/29/1954",
     },
     {
-        title: "ComicCon",
-        author: "New York",
-        copiesSold: 257000,
-        state: "New York",
-        publishingDate: "06/01/2019",
+        title: "The Silmarillion",
+        author: "J.R.R. Tolkien",
+        copiesSold: 1200000,
+        country: "United Kingdom",
+        publishingDate: "09/15/1977",
     },
     {
-        title: "ComicCon",
-        author: "San Diego",
-        copiesSold: 130000,
-        state: "California",
-        publishingDate: "06/01/2017",
+        title: "The Cat in the Hat",
+        author: "Dr. Seuss",
+        copiesSold: 16500000,
+        country: "United States of America",
+        publishingDate: "03/12/1957",
     },
     {
-        title: "ComicCon",
-        author: "San Diego",
-        copiesSold: 140000,
-        state: "California",
-        publishingDate: "06/01/2018",
+        title: "Green Eggs and Ham",
+        author: "Dr. Seuss",
+        copiesSold: 18000000,
+        country: "United States of America",
+        publishingDate: "08/12/1960",
     },
     {
-        title: "ComicCon",
-        author: "San Diego",
-        copiesSold: 150000,
-        state: "California",
-        publishingDate: "06/01/2019",
+        title: "One Fish, Two Fish, Red Fish, Blue Fish",
+        author: "Dr. Seuss",
+        copiesSold: 13700000,
+        country: "United States of America",
+        publishingDate: "05/14/1960",
     },
     {
-        title: "HeroesCon",
-        author: "Charlotte",
-        copiesSold: 40000,
-        state: "North Carolina",
-        publishingDate: "06/01/2017",
+        title: "David Copperfield",
+        author: "Charles Dickens",
+        copiesSold: 85000000,
+        country: "United Kingdom",
+        publishingDate: "11/07/1849",
     },
     {
-        title: "HeroesCon",
-        author: "Charlotte",
-        copiesSold: 45000,
-        state: "North Carolina",
-        publishingDate: "06/01/2018",
+        title: "A Tale of Two Cities",
+        author: "Charles Dickens",
+        copiesSold: 223000000,
+        country: "United Kingdom",
+        publishingDate: "11/25/1859",
     },
     {
-        title: "HeroesCon",
-        author: "Charlotte",
-        copiesSold: 50000,
-        state: "North Carolina",
-        publishingDate: "06/01/2019",
+        title: "Great Expectations",
+        author: "Charles Dickens",
+        copiesSold: 165000000,
+        country: "United Kingdom",
+        publishingDate: "06/01/1861",
     }
 ];
 
@@ -185,7 +185,7 @@ function displayData(){
         bookCols[0].textContent = currentBooks[i].title;
         bookCols[1].textContent = currentBooks[i].author;
         bookCols[2].textContent = currentBooks[i].copiesSold;
-        bookCols[3].textContent = currentBooks[i].state;
+        bookCols[3].textContent = currentBooks[i].country;
         bookCols[4].textContent = new Date(currentBooks[i].publishingDate).toLocaleDateString();
 
         bookDataBody.appendChild(bookRow);
@@ -202,8 +202,8 @@ function saveData(){
     obj["title"] = document.getElementById("newTitle").value;
     obj["author"] = document.getElementById("newAuthor").value;
     obj["copiesSold"] = parseInt(document.getElementById("newCopiesSold").value, 10);
-    let stateSelect = document.getElementById("newState");
-    obj["state"] = stateSelect.options[stateSelect.selectedIndex].text;
+    let countrySelect = document.getElementById("newCountry");
+    obj["country"] = countrySelect.options[countrySelect.selectedIndex].text;
     let publishingDate = document.getElementById("newPublishingDate").value;
     let publishingDate2 = `${publishingDate} 00:00`;
     obj["publishingDate"] = new Date(publishingDate2).toLocaleDateString();
