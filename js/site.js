@@ -1,6 +1,6 @@
 const books = [{
         title: "The Hobbit",
-        author: "J.R.R Tolkien",
+        author: "J.R.R. Tolkien",
         copiesSold: 104000000,
         country: "United Kingdom",
         publishingDate: "09/21/1937",
