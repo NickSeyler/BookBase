@@ -8,4 +8,4 @@ by a specific author. Add additional entires to the database.
 Entries are saved into local storage.
 
 ## Demo The Project
-[nickseyler-bookbase.netlify.app](nickseyler-bookbase.netlify.app)
+[https://nickseyler-bookbase.netlify.app](https://nickseyler-bookbase.netlify.app)
