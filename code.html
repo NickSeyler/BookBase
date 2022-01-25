@@ -64,29 +64,216 @@
     <main class="flex-shrink-0">
         <div class="container mt-5 px-5">
             <h2 class="border-1 border-bottom border-dark">The Code</h2>
+
             <div class="row">
                 <div class="col-12 col-lg-8">
                     <pre class="line-numbers">
                         <code class="language-js">
-                            //Display message to the user
-                            function getMessage(){
-                                let userMessage = document.getElementById("message").value;
-                                Swal.fire(
-                                    'The App Title',
-                                    userMessage,
-                                    'success'
-                                );
-                            }                       
+                            //Build the drop down list
+                            function buildDropDown(){
+                                //get dropdown and clear it from html
+                                let bookDropDown = document.getElementById("bookDropDown");
+                                bookDropDown.innerHTML = "";
+
+                                //get local storage or default data
+                                let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
+
+                                //get a distinct list of authors by filtering the array
+                                let authors = currentBooks.map((book) => book.author);
+                                let distinctAuthors = [...new Set(authors)];
+
+                                //load templates
+                                let dropDownTemplate = document.getElementById("bookDropDown-template");
+
+                                //use templates to create a dropdown
+                                let dropDownItemTemplate = document.importNode(dropDownTemplate.content, true);
+                                let li = dropDownItemTemplate.querySelector("li")
+                                let dropDownItem = li.querySelector("a");
+                                dropDownItem.setAttribute("data-author", "All");
+                                dropDownItem.textContent = "All";
+                                bookDropDown.appendChild(li);
+
+                                for (let i = 0; i &lt; distinctAuthors.length; i++){
+                                    dropDownItemTemplate = document.importNode(dropDownTemplate.content, true);
+                                    li = dropDownItemTemplate.querySelector("li")
+                                    dropDownItem = li.querySelector("a");
+                                    dropDownItem.setAttribute("data-author", distinctAuthors[i]);
+                                    dropDownItem.textContent = distinctAuthors[i];
+                                    bookDropDown.appendChild(li);
+                                }
+
+                                displayStats(currentBooks);
+                            }                 
                         </code>
                     </pre>
                 </div>
                 <div class="col-12 col-lg-4">
-                    <p>The code is structured in one function.
-                        It accesses the user's input then displays a Sweetalert alert window.</p>
-                    <h5>getMessage</h5>
-                    <p>Prints the user's inputted message.</p>
+                    <h5>buildDropDown</h5>
+                    <p>Build the drop down list from either preloaded data or data saved in local storage.</p>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <pre class="line-numbers">
+                        <code class="language-js">
+                            //Display the book sales stats
+                            function displayStats(filteredBooks){
+                                let total = 0;
+                                let average = 0;
+                                let most = 0;
+                                let least = -1;
+
+                                let currentSold = 0;
+                                for (i = 0; i &lt; filteredBooks.length ;i++){
+                                    currentSold = filteredBooks[i].copiesSold;
+                                    total += currentSold;
+
+                                    if (most &lt; currentSold){
+                                        most = currentSold;
+                                    }
+
+                                    if (least > currentSold || least == -1){
+                                        least = currentSold;
+                                    }
+                                }
+                                average = total / filteredBooks.length;
+
+                                document.getElementById("total").innerHTML = total.toLocaleString();
+                                document.getElementById("average").innerHTML = average.toLocaleString(
+                                    "en-US",{
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    }
+                                );
+                                document.getElementById("most").innerHTML = most.toLocaleString();
+                                document.getElementById("least").innerHTML = least.toLocaleString();
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <h5>displayStats</h5>
+                    <p>Display the book sales stats to the webpage</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <pre class="line-numbers">
+                        <code class="language-js">
+                            //Show the book sales
+                            function filterBooks(element){
+
+                                let author = element.getAttribute("data-author");
+                                let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
+
+                                //filter books based on the selected author
+                                let filteredBooks = currentBooks;
+                                if (author != "All"){
+                                    filteredBooks = currentBooks.filter(function(book){
+                                        if(book.author == author){
+                                            return book;
+                                        }
+                                    })
+                                }
+
+                                if (author == "All"){
+                                    document.getElementById("statsHeader").innerHTML = `Stats for All Books`;
+                                }
+                                else{
+                                    document.getElementById("statsHeader").innerHTML = `Stats for ${author}'s Books`;
+                                }
+
+                                displayStats(filteredBooks);
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <h5>filterBooks</h5>
+                    <p>Display the book sales stats to the webpage filter by author, 
+                        or unfiltered if "All" is selected.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <pre class="line-numbers">
+                        <code class="language-js">
+                            //Display the data
+                            function displayData(){
+                                let template = document.getElementById("bookData-template");
+                                let bookDataBody = document.getElementById("bookDataBody");
+                                bookDataBody.innerHTML="";
+
+                                let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || [];
+
+                                if (currentBooks.length == 0){
+                                    currentBooks = books;
+                                    localStorage.setItem("booksArray", JSON.stringify(currentBooks));
+                                }
+
+                                for (let i = 0; i &lt; currentBooks.length; i++){
+                                    let bookRow = document.importNode(template.content, true);
+                                    let bookCols = bookRow.querySelectorAll("td");
+
+                                    bookCols[0].textContent = currentBooks[i].title;
+                                    bookCols[1].textContent = currentBooks[i].author;
+                                    bookCols[2].textContent = currentBooks[i].copiesSold;
+                                    bookCols[3].textContent = currentBooks[i].country;
+                                    bookCols[4].textContent = new Date(currentBooks[i].publishingDate).toLocaleDateString();
+
+                                    bookDataBody.appendChild(bookRow);
+                                }
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <h5>displayData</h5>
+                    <p>
+                        Display either preloaded data or data stored 
+                        in local storage to the webpage.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <pre class="line-numbers">
+                        <code class="language-js">
+                            //save data
+                            function saveData(){
+                                let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
+                                let obj = {};
+
+                                obj["title"] = document.getElementById("newTitle").value;
+                                obj["author"] = document.getElementById("newAuthor").value;
+                                obj["copiesSold"] = parseInt(document.getElementById("newCopiesSold").value, 10);
+                                let countrySelect = document.getElementById("newCountry");
+                                obj["country"] = countrySelect.options[countrySelect.selectedIndex].text;
+                                let publishingDate = document.getElementById("newPublishingDate").value;
+                                let publishingDate2 = `${publishingDate} 00:00`;
+                                obj["publishingDate"] = new Date(publishingDate2).toLocaleDateString();
+
+                                currentBooks.push(obj);
+                                localStorage.setItem("booksArray", JSON.stringify(currentBooks));
+
+                                buildDropDown();
+                                displayData();
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <h5>saveData</h5>
+                    <p>
+                        Save the data to local storage. Update the data on the webpage.
+                    </p>
+                </div>
+            </div>
+            
         </div>
     </main>
 

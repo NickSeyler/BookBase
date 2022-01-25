@@ -63,6 +63,7 @@ const books = [{
     }
 ];
 
+//Build the drop down list from either preloaded data or data saved to local storage
 function buildDropDown(){
     //get dropdown and clear it from html
     let bookDropDown = document.getElementById("bookDropDown");
@@ -95,13 +96,12 @@ function buildDropDown(){
         bookDropDown.appendChild(li);
     }
 
-    //display stats
     displayStats(currentBooks);
 }
 
 //Expected input: An array of book objects
 //Expected return: none
-//Display the book stats on the webpage
+//Display the book sales stats
 function displayStats(filteredBooks){
     let total = 0;
     let average = 0;
@@ -137,13 +137,13 @@ function displayStats(filteredBooks){
 
 //Expected input: A template element
 //Expected return: none
-//Show the book sales for a specific author when an author is selected from the dropdown
-function getBooks(element){
+//Show the book sales by author
+function filterBooks(element){
 
     let author = element.getAttribute("data-author");
     let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
 
-    //filter events based on the selected author
+    //filter books based on the selected author
     let filteredBooks = currentBooks;
     if (author != "All"){
         filteredBooks = currentBooks.filter(function(book){
@@ -165,7 +165,7 @@ function getBooks(element){
 
 //Expected input: none
 //Expected return: none
-//Display the content of the data on load
+//Display the content of the data
 function displayData(){
     let template = document.getElementById("bookData-template");
     let bookDataBody = document.getElementById("bookDataBody");
