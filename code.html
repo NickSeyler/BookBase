@@ -249,6 +249,22 @@
                                 let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
                                 let obj = {};
 
+                                let bookid = 1;
+                                //generate next id for book
+                                if (currentBooks == 0) {
+                                    bookid = 1;
+                                } else {
+                                    let bookIDArray = currentBooks.map(
+                                        function (obj) {
+                                            return obj.id;
+                                        });
+
+                                    //find the maximum in the array
+                                    let maxid = Math.max.apply(null, bookIDArray);
+                                    bookid = maxid + 1;
+                                }
+
+                                obj["id"] = bookid;
                                 obj["title"] = document.getElementById("newTitle").value;
                                 obj["author"] = document.getElementById("newAuthor").value;
                                 obj["copiesSold"] = parseInt(document.getElementById("newCopiesSold").value, 10);
@@ -276,6 +292,40 @@
                 </div>
             </div>
             
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <pre class="line-numbers">
+                        <code class="language-js">
+                            //delete data
+                            function deleteData(delBtn){
+                                let currentBooks = JSON.parse(localStorage.getItem("booksArray")) || books;
+
+                                let row = delBtn.parentElement.parentElement;
+                                let bookid = row.getAttribute("data-id");
+
+                                row.remove();
+
+                                //find index of item in array
+                                let bookIndex = currentBooks.findIndex(obj => obj.id == bookid);
+                                currentBooks.splice(bookIndex, 1);
+
+                                //push the new values back to local storage
+                                localStorage.setItem("booksArray", JSON.stringify(currentBooks));
+
+                                buildDropDown();
+                                displayData();
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <h5>deleteData</h5>
+                    <p>
+                        When the user presses a button, delete the data from the corresponding row and the local storage.
+                    </p>
+                </div>
+            </div>
+
         </div>
     </main>
 
